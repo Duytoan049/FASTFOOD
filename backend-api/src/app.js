@@ -17,7 +17,9 @@ const {
 const { specs, swaggerUi } = require("./docs/swagger");
 
 const app = express();
-
+app.get("/helloworld", (req, res) => {
+  res.send("Hello World!");
+});
 app.use(
   cors({
     origin: "http://localhost:5173",
