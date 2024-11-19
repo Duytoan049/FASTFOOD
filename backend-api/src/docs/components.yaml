@@ -1,0 +1,173 @@
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: Unique identifier for the customer
+        name:
+          type: string
+          description: Customer's name
+          maxLength: 255
+        email:
+          type: string
+          format: email
+          description: Customer's email address
+          maxLength: 255
+        address:
+          type: string
+          description: Customer's address
+          maxLength: 255
+        phone:
+          type: string
+          description: Customer's phone number
+          maxLength: 20
+        gender:
+          type: integer
+          description: Customer's gender
+          enum: [0, 1]
+        imgFile:
+          type: string
+          format: binary
+          writeOnly: true
+          description: File for uploading the customer's avatar
+    Product:
+      type: object
+      properties:
+        product_Id:
+          type: integer
+          readOnly: true
+          description: Unique identifier for the product
+        product_Name:
+          type: string
+          description: Product's name
+          maxLength: 255
+        product_Price:
+          type: integer
+          description: Product's price
+        imgFile:
+          type: string
+          format: binary
+          writeOnly: true
+          description: File for uploading the product's avatar
+    Order:
+      type: object
+      properties:
+        order_Id:
+          type: integer
+          readOnly: true
+          description: Unique identifier for the order
+        customer_Id:
+          type: integer
+          readOnly: true
+          description: Unique identifier for the customer
+        order_Date:
+          type: string
+          format: date-time
+          description: The date when the order was placed
+        total_Price:
+          type: integer
+          description: The total price for the order
+    OrderDetail:
+      type: object
+      properties:
+        order_Id:
+          type: integer
+          description: The ID of the order
+        product_Id:
+          type: integer
+          description: The ID of the product
+        quantity:
+          type: integer
+          description: The quantity of the product in the order
+        price:
+          type: number
+          format: float
+          description: The price of the product
+    PaginationMetadata:
+      type: object
+      properties:
+        totalRecords:
+          type: integer
+          default: 0
+          description: Total number of records
+        firstPage:
+          type: integer
+          default: 1
+          description: The first page
+        lastPage:
+          type: integer
+          default: 1
+          description: The last page
+        page:
+          type: integer
+          default: 1
+          description: The current page
+        limit:
+          type: integer
+          default: 5
+          description: The number of records per page
+
+  responses:
+    '200NoData':
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: The response status
+                enum:
+                  - success
+              data:
+                type: object
+                nullable: true
+                default: null
+                description: The response data
+
+  parameters:
+    customerIdParam:
+      name: id
+      description: Customer ID
+      required: true
+      in: path
+      schema:
+        type: integer
+    productIdParam:
+      name: product_Id
+      description: Product ID
+      required: true
+      in: path
+      schema:
+        type: integer
+    orderIdParam:
+      name: order_Id
+      description: Order ID
+      required: true
+      in: path
+      schema:
+        type: integer
+    limitParam:
+      name: limit
+      description: Number of records per page
+      in: query
+      schema:
+        type: integer
+        default: 5
+        minimum: 1
+        maximum: 100
+      required: false
+
+    pageParam:
+      name: page
+      description: Page number of records
+      in: query
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+      required: false
+  
